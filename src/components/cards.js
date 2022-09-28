@@ -22,8 +22,8 @@ function Cards() {
         <Row>
           {players.map((player) => {
             return (
-              <Col xs="12" md="6" lg="4">
-                <Card key={player.id} data={player} />;
+              <Col xs="12" md="6" lg="4" key={player.id}>
+                <Card player={player} />
               </Col>
             );
           })}

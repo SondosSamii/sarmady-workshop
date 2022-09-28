@@ -2,15 +2,21 @@ import { Col, Container, Image, Row } from "react-bootstrap";
 import "../styles/card.scss";
 
 function Card(props) {
-  function calcAge(date) {
-    const birthDate = new Date(date),
-      today = new Date();
-    const age = today.getUTCFullYear() - birthDate.getUTCFullYear();
-    console.log(age);
-    return age;
+  function getYear(date) {
+    return new Date(date).getUTCFullYear();
   }
 
-  // calcAge("1992-02-04T00:00:00");
+  function calcAge(dob) {
+    return new Date().getUTCFullYear() - getYear(dob);
+  }
+
+  function calcPrice(careerData) {
+    let price = 0;
+    careerData.map((data) => {
+      price += data.price;
+    });
+    return Math.round(price);
+  }
 
   return (
     <div className="card">
@@ -19,24 +25,26 @@ function Card(props) {
           <div className="img-circle">
             <Image
               fluid
-              src="https://semedia.filgoal.com/Photos/Person/medium/14490.png"
+              src={`https://semedia.filgoal.com/Photos/Person/medium/${props.player.id}.png`}
               alt="Player"
             />
-            <span>80M $</span>
+            <span>{calcPrice(props.player.careerData)}M $</span>
           </div>
-          <h2>{props.data.name}</h2>
+          <h2>{props.player.name}</h2>
           <div className="player-details">
-            <img src="images/person.svg" />
-            {calcAge(props.data.dateOfBirth)}
-            عام
+            <img src="images/person.svg" alt="Person" />
+            {calcAge(props.player.dateOfBirth)} عام
             <span>|</span>
             <img src="images/swap.svg" alt="swap" /> إنتقال
           </div>
 
           <Row className="justify-content-center align-items-end text-center clubs">
             <Col xs="auto">
-              <img src="images/club1.svg" alt="Club" />
-              <h3>باريس سان جيرمان</h3>
+              <img
+                src={`https://semedia.filgoal.com/Photos/Team/Medium/${props.player.careerData[1].teamId}.png`}
+                alt={props.player.careerData[1].teamName}
+              />
+              <h3>{props.player.careerData[1].teamName}</h3>
             </Col>
             <Col xs="auto">
               <img
@@ -44,11 +52,14 @@ function Card(props) {
                 alt="Arrows"
                 className="arrows"
               />
-              <span>2023</span>
+              <span>{getYear(props.player.careerData[0].from)}</span>
             </Col>
             <Col xs="auto">
-              <img src="images/club2.svg" alt="Club" />
-              <h3>ريال مدريد</h3>
+              <img
+                src={`https://semedia.filgoal.com/Photos/Team/Medium/${props.player.careerData[0].teamId}.png`}
+                alt={props.player.careerData[0].teamName}
+              />
+              <h3>{props.player.careerData[0].teamName}</h3>
             </Col>
           </Row>
         </Container>
